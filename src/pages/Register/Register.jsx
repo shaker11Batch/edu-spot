@@ -2,7 +2,13 @@ import { useForm } from "react-hook-form";
 import { FaUser, FaImage, FaEnvelope, FaLock } from "react-icons/fa";
 import { Link } from "react-router";
 
+import { use } from "react";
+import { AuthContext } from "../../shared/Context/AuthContext";
+import { updateProfile } from "firebase/auth";
+import { auth } from "../../Firebase/firebase.init";
+
 const Register = () => {
+    const { createUser, setUser } = use(AuthContext)
     const {
         register,
         handleSubmit,
@@ -12,6 +18,23 @@ const Register = () => {
 
     const onSubmit = (data) => {
         console.log("Registered Data:", data);
+        createUser(data.email, data.password)
+            .then(result => {
+                const user = result.user;
+                console.log('shker..............', user)
+
+                // update profile 
+                const profile = { displayName: data?.name, photoURL: data?.photoURL }
+                updateProfile(auth.currentUser, profile)
+                    .then(() => {
+                        console.log('user profile update')
+                        setUser(...user, profile)
+                    })
+                    .catch(error => console.log(error))
+
+
+            })
+            .catch(error => console.log(error))
         reset();
     };
 

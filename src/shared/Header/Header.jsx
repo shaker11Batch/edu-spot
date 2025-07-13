@@ -1,8 +1,19 @@
-import React from 'react';
+import React, { use } from 'react';
 import { FaSignInAlt } from "react-icons/fa";
+import { FiLogOut } from "react-icons/fi";
 import { Link } from 'react-router';
+import { AuthContext } from '../Context/AuthContext';
+import { auth } from '../../Firebase/firebase.init';
 
 const Header = () => {
+    const { user, logOut } = use(AuthContext)
+
+    const handleLogOut = () => {
+        logOut(auth)
+            .then(() => console.log('log out'))
+            .catch(error => console.log(error))
+    }
+
     return (
         <div className="navbar bg-base-100 shadow-sm">
             <div className="navbar-start">
@@ -42,12 +53,24 @@ const Header = () => {
                 </ul>
             </div>
             <div className="navbar-end">
-            <Link to="/login" className="flex items-center gap-2 text-sm font-medium hover:text-primary transition">
-        <FaSignInAlt className="text-lg" />
-        Login
-      </Link>
+
+                {
+                    user ? <button
+                        onClick={handleLogOut}
+                        className="btn btn-error btn-sm flex items-center gap-1"
+                    >
+                        <FiLogOut className="text-lg" />
+                        Logout
+                    </button>
+                        : <Link to="/login" className="flex items-center gap-2 text-sm font-medium hover:text-primary transition">
+                            <FaSignInAlt className="text-lg" />
+                            Login
+                        </Link>
+
+                }
+
             </div>
-        </div>
+        </div >
     );
 };
 

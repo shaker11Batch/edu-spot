@@ -1,9 +1,12 @@
+import { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { FaEnvelope, FaLock } from "react-icons/fa";
 import { Link } from "react-router";
+import { AuthContext } from "../../shared/Context/AuthContext";
 
 
 const Login = () => {
+    const {signIn} = useContext(AuthContext)
     const {
         register,
         handleSubmit,
@@ -12,6 +15,11 @@ const Login = () => {
 
     const onSubmit = (data) => {
         console.log("Login Data:", data);
+        signIn(data.email, data.password)
+        .then(result =>{
+            console.log(result.user)
+        })
+        .catch(error =>console.log(error))
         // handle login logic here
     };
 
