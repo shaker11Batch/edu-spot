@@ -1,77 +1,111 @@
-import React, { use } from 'react';
-import { FaSignInAlt } from "react-icons/fa";
+import { useState, useContext } from "react";
+import { FaHome, FaUserFriends, FaBell, FaBars, FaTimes, FaSignInAlt } from "react-icons/fa";
 import { FiLogOut } from "react-icons/fi";
-import { Link } from 'react-router';
-import { AuthContext } from '../Context/AuthContext';
-import { auth } from '../../Firebase/firebase.init';
+import { Link, NavLink } from "react-router"; // corrected router import
+import { AuthContext } from "../Context/AuthContext";
 
 const Header = () => {
-    const { user, logOut } = use(AuthContext)
+  const { user, logOut } = useContext(AuthContext);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-    const handleLogOut = () => {
-        logOut(auth)
-            .then(() => console.log('log out'))
-            .catch(error => console.log(error))
-    }
+  const handleLogOut = () => {
+    logOut()
+      .then(() => console.log("Log out"))
+      .catch((error) => console.log(error));
+  };
 
-    return (
-        <div className="navbar bg-base-100 shadow-sm">
-            <div className="navbar-start">
-                <div className="dropdown">
-                    <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" /> </svg>
-                    </div>
-                    <ul
-                        tabIndex={0}
-                        className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
-                        <li><a>Item 1</a></li>
-                        <li>
-                            <a>Parent</a>
-                            <ul className="p-2">
-                                <li><a>Submenu 1</a></li>
-                                <li><a>Submenu 2</a></li>
-                            </ul>
-                        </li>
-                        <li><a>Item 3</a></li>
-                    </ul>
-                </div>
-                <a className="btn btn-ghost text-xl">daisyUI</a>
-            </div>
-            <div className="navbar-center hidden lg:flex">
-                <ul className="menu menu-horizontal px-1">
-                    <li><a>Item 1</a></li>
-                    <li>
-                        <details>
-                            <summary>Parent</summary>
-                            <ul className="p-2">
-                                <li><a>Submenu 1</a></li>
-                                <li><a>Submenu 2</a></li>
-                            </ul>
-                        </details>
-                    </li>
-                    <li><a>Item 3</a></li>
-                </ul>
-            </div>
-            <div className="navbar-end">
+  return (
+    <nav className="bg-white shadow-md px-4 py-3">
+      <div className="max-w-7xl mx-auto flex items-center justify-between">
+        {/* Logo */}
+        <Link to="/" className="text-xl font-bold text-blue-600">
+          MyForum
+        </Link>
 
-                {
-                    user ? <button
-                        onClick={handleLogOut}
-                        className="btn btn-error btn-sm flex items-center gap-1"
-                    >
-                        <FiLogOut className="text-lg" />
-                        Logout
-                    </button>
-                        : <Link to="/login" className="flex items-center gap-2 text-sm font-medium hover:text-primary transition">
-                            <FaSignInAlt className="text-lg" />
-                            Login
-                        </Link>
+        {/* Hamburger for Mobile */}
+        <div className="md:hidden">
+          <button onClick={() => setIsMenuOpen(!isMenuOpen)}>
+            {isMenuOpen ? <FaTimes size={22} /> : <FaBars size={22} />}
+          </button>
+        </div>
 
+        {/* Nav Links */}
+        <div className={`md:flex items-center gap-6 ${isMenuOpen ? "block" : "hidden"} w-full md:w-auto mt-4 md:mt-0`}>
+          <ul className="flex flex-col md:flex-row gap-4 md:gap-6 items-start md:items-center text-gray-700 text-base">
+            <li>
+              <NavLink
+                to="/"
+                className={({ isActive }) =>
+                  isActive
+                    ? "flex items-center gap-1 text-blue-600 font-semibold"
+                    : "flex items-center gap-1 hover:text-blue-500"
                 }
+              >
+                <FaHome /> Home
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/membership"
+                className={({ isActive }) =>
+                  isActive
+                    ? "flex items-center gap-1 text-blue-600 font-semibold"
+                    : "flex items-center gap-1 hover:text-blue-500"
+                }
+              >
+                <FaUserFriends /> Membership
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/notifications"
+                className={({ isActive }) =>
+                  isActive
+                    ? "flex items-center gap-1 text-blue-600 font-semibold"
+                    : "flex items-center gap-1 hover:text-blue-500"
+                }
+              >
+                <FaBell /> Notification
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/dashboard"
+                className={({ isActive }) =>
+                  isActive
+                    ? "flex items-center gap-1 text-blue-600 font-semibold"
+                    : "flex items-center gap-1 hover:text-blue-500"
+                }
+              >
+                <FaHome /> Dashboard
+              </NavLink>
+            </li>
+          </ul>
 
-            </div>
-        </div >
-    );
+          {/* Login/Logout */}
+          <div className="mt-4 md:mt-0 md:ml-4">
+            {user ? (
+              <button
+                onClick={handleLogOut}
+                className="btn btn-error btn-sm flex items-center gap-1"
+              >
+                <FiLogOut className="text-lg" />
+                Logout
+              </button>
+            ) : (
+              <Link
+                to="/login"
+                className="flex items-center gap-2 text-sm font-medium hover:text-primary transition"
+              >
+                <FaSignInAlt className="text-lg" />
+                Login
+              </Link>
+            )}
+          </div>
+        </div>
+      </div>
+    </nav>
+  );
 };
 
 export default Header;

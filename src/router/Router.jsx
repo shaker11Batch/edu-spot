@@ -4,6 +4,10 @@ import Home from "../pages/Home/Home";
 import Register from "../pages/Register/Register";
 import Login from "../pages/Login/Login";
 import Error from "../shared/ErrorComponent/Error";
+import Dashboard from "../pages/Dashboard/Dashboard";
+import MyProfile from "../pages/Dashboard/MyProfile";
+import AddPost from "../pages/Dashboard/AddPost";
+import MyPost from "../pages/Dashboard/MyPost";
 
 export const router = createBrowserRouter([
     {
@@ -23,6 +27,25 @@ export const router = createBrowserRouter([
                 path: '/login',
                 Component: Login
             }
+        ]
+       
+    },
+    {
+        path: '/dashboard',
+        Component: Dashboard,
+        children:[
+            {
+                path: 'profile',
+                Component: MyProfile
+            },
+            {
+                path: 'add-post',
+                Component: AddPost
+            },
+            {
+                path: 'my-posts',
+                Component: MyPost
+            },
         ]
     }
 ])
