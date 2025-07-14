@@ -10,7 +10,7 @@ const AnnouncementList = () => {
 const axiosSecure = useAxiosSecure()
 
     const [announcements, setAnnouncements] = useState([])
-
+/
     axiosSecure('/announcement')
     .then(res =>{
         console.log(res.data)
