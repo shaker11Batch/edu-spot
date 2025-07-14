@@ -9,16 +9,22 @@ import MyProfile from "../pages/Dashboard/MyProfile";
 import AddPost from "../pages/Dashboard/AddPost";
 import MyPost from "../pages/Dashboard/MyPost";
 import AnnouncementForm from "../pages/Dashboard/AnnouncementForm";
+import AnnouncementList from "../pages/AnnouncementList/AnnouncementList";
 
 export const router = createBrowserRouter([
     {
         path: '/',
         Component: MainLayout,
         errorElement: <Error></Error>,
-        children:[
+        children: [
             {
                 index: true,
                 Component: Home
+            },
+            {
+                path: 'auth-announce',
+                Component: AnnouncementList
+
             },
             {
                 path: '/register',
@@ -29,12 +35,12 @@ export const router = createBrowserRouter([
                 Component: Login
             }
         ]
-       
+
     },
     {
         path: '/dashboard',
         Component: Dashboard,
-        children:[
+        children: [
             {
                 path: 'profile',
                 Component: MyProfile
