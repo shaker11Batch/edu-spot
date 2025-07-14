@@ -2,10 +2,12 @@ import { useState } from "react";
 import { NavLink, Outlet } from "react-router";
 import { FaUser, FaPlusCircle, FaListAlt, FaBars, FaTimes } from "react-icons/fa";
 
+
 const Dashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
+    <>
     <div className="min-h-screen flex flex-col md:flex-row bg-gray-50">
 
       {/* Mobile Top Bar */}
@@ -71,6 +73,7 @@ const Dashboard = () => {
         <Outlet />
       </main>
     </div>
+    </>
   );
 };
 

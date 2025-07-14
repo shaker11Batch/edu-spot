@@ -2,12 +2,14 @@ import { useForm } from "react-hook-form";
 import { FaUser, FaImage, FaEnvelope, FaLock } from "react-icons/fa";
 import { Link } from "react-router";
 
-import { use } from "react";
+import { use, useState } from "react";
 import { AuthContext } from "../../shared/Context/AuthContext";
 import { updateProfile } from "firebase/auth";
 import { auth } from "../../Firebase/firebase.init";
+import axios from "axios";
 
 const Register = () => {
+    const [profilePic, setProfilePic] = useState('')
     const { createUser, setUser } = use(AuthContext)
     const {
         register,
@@ -24,7 +26,7 @@ const Register = () => {
                 console.log('shker..............', user)
 
                 // update profile 
-                const profile = { displayName: data?.name, photoURL: data?.photoURL }
+                const profile = { displayName: data?.name, photoURL: profilePic }
                 updateProfile(auth.currentUser, profile)
                     .then(() => {
                         console.log('user profile update')
@@ -37,6 +39,20 @@ const Register = () => {
             .catch(error => console.log(error))
         reset();
     };
+
+
+    const handleImageUpload = async e => {
+        const image = e.target?.files[0];
+        console.log(image)
+        const fromData = new FormData();
+        fromData.append('image', image)
+
+        const imageUploadURL = `https://api.imgbb.com/1/upload?expiration=600&key=${import.meta.env.VITE_image_upload_key}`
+
+        const res = await axios.post(imageUploadURL, fromData)
+        setProfilePic(res.data.data.url)
+
+    }
 
     return (
         <div className="min-h-screen flex flex-col md:flex-row items-center justify-center bg-gray-100">
@@ -75,8 +91,9 @@ const Register = () => {
                             <div className="input input-bordered flex items-center gap-2">
                                 <FaImage />
                                 <input
-                                    type="text"
-                                    {...register("photoURL", { required: "Photo URL is required" })}
+                                    type="file"
+                                    onChange={handleImageUpload}
+                                    // {...register("photoURL", { required: "Photo URL is required" })}
                                     className="grow"
                                     placeholder="Paste photo URL"
                                 />
