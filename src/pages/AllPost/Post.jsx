@@ -9,7 +9,7 @@ const Post = ({ post }) => {
         {/* Author */}
         <div className="flex items-center gap-4">
           <img
-            src={post.authorImage}
+            src={post.imageUpload}
             alt={post.authorName}
             className="w-12 h-12 rounded-full object-cover"
           />

@@ -8,6 +8,7 @@ import Dashboard from "../pages/Dashboard/Dashboard";
 import MyProfile from "../pages/Dashboard/MyProfile";
 import AddPost from "../pages/Dashboard/AddPost";
 import MyPost from "../pages/Dashboard/MyPost";
+import AnnouncementForm from "../pages/Dashboard/AnnouncementForm";
 
 export const router = createBrowserRouter([
     {
@@ -41,6 +42,10 @@ export const router = createBrowserRouter([
             {
                 path: 'add-post',
                 Component: AddPost
+            },
+            {
+                path: 'announcements',
+                Component: AnnouncementForm,
             },
             {
                 path: 'my-posts',

@@ -1,8 +1,9 @@
-import { use } from "react";
+import { use, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import Select from "react-select";
 import { AuthContext } from "../../shared/Context/AuthContext";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
+import axios from "axios";
 
 
 const tagOptions = [
@@ -14,6 +15,7 @@ const tagOptions = [
 ];
 
 const AddPost = () => {
+  const [imageUpload,setImageUpload] = useState('')
     const {user} = use(AuthContext)
     const axiosSecure = useAxiosSecure();
   const { register, handleSubmit, control, reset, formState: { errors } } = useForm();
@@ -21,6 +23,7 @@ const AddPost = () => {
   const onSubmit = (data) => {
     const postData = {
       ...data,
+      imageUpload,
       tag: data.tag?.value || "",
       upVote: 0,
       downVote: 0,
@@ -36,6 +39,19 @@ axiosSecure.post('/teachers', postData)
     // reset();
   };
 
+  const handleImageUpload = async e => {
+    const image = e.target?.files[0];
+    console.log(image)
+    const fromData = new FormData();
+    fromData.append('image', image)
+
+    const imageUploadURL = `https://api.imgbb.com/1/upload?expiration=600&key=${import.meta.env.VITE_image_upload_key}`
+
+    const res = await axios.post(imageUploadURL, fromData)
+    setImageUpload(res.data.data.url)
+
+}
+
   return (
     <div className="max-w-3xl mx-auto bg-white shadow-md rounded-xl p-6 mt-10 mb-10 w-full">
       <h2 className="text-2xl font-bold text-center mb-6 text-blue-600">Create a Post</h2>
@@ -45,8 +61,9 @@ axiosSecure.post('/teachers', postData)
         <div className="col-span-1">
           <label className="label">Author Image URL</label>
           <input
-            type="text"
-            {...register("authorImage", { required: "Author image is required" })}
+            type="file"
+            onChange={handleImageUpload}
+            // {...register("authorImage", { required: "Author image is required" })}
             className="input input-bordered w-full"
             placeholder="https://example.com/image.jpg"
           />
