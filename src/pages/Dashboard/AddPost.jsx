@@ -15,9 +15,9 @@ const tagOptions = [
 ];
 
 const AddPost = () => {
-  const [imageUpload,setImageUpload] = useState('')
-    const {user} = use(AuthContext)
-    const axiosSecure = useAxiosSecure();
+  const [imageUpload, setImageUpload] = useState('')
+  const { user } = use(AuthContext)
+  const axiosSecure = useAxiosSecure();
   const { register, handleSubmit, control, reset, formState: { errors } } = useForm();
 
   const onSubmit = (data) => {
@@ -31,11 +31,11 @@ const AddPost = () => {
     console.log("Post Data:", postData);
     // Submit to backend here
 
-axiosSecure.post('/teachers', postData)
-.then(res =>{
-    console.log(res.data)
-})
-.catch(error=>console.log(error))
+    axiosSecure.post('/posts', postData)
+      .then(res => {
+        console.log(res.data)
+      })
+      .catch(error => console.log(error))
     // reset();
   };
 
@@ -50,7 +50,7 @@ axiosSecure.post('/teachers', postData)
     const res = await axios.post(imageUploadURL, fromData)
     setImageUpload(res.data.data.url)
 
-}
+  }
 
   return (
     <div className="max-w-3xl mx-auto bg-white shadow-md rounded-xl p-6 mt-10 mb-10 w-full">
@@ -59,13 +59,13 @@ axiosSecure.post('/teachers', postData)
       <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Author Image */}
         <div className="col-span-1">
-          <label className="label">Author Image URL</label>
+          <label className="label">Post Image URL</label>
           <input
             type="file"
             onChange={handleImageUpload}
             // {...register("authorImage", { required: "Author image is required" })}
             className="input input-bordered w-full"
-            placeholder="https://example.com/image.jpg"
+            placeholder="Photo"
           />
           {errors.authorImage && <p className="text-red-500 text-sm">{errors.authorImage.message}</p>}
         </div>
@@ -74,8 +74,9 @@ axiosSecure.post('/teachers', postData)
         <div className="col-span-1">
           <label className="label">Author Name</label>
           <input
+          value={user?.displayName}
             type="text"
-            {...register("authorName", { required: "Author name is required" })}
+            {...register("authorName", )}
             className="input input-bordered w-full"
             placeholder="John Doe"
           />
@@ -107,6 +108,29 @@ axiosSecure.post('/teachers', postData)
           {errors.title && <p className="text-red-500 text-sm">{errors.title.message}</p>}
         </div>
 
+        {/* Tag - react-select */}
+        <div className="col-span-1">
+          <label className="label">Tag</label>
+          <Controller
+            name="tag"
+            control={control}
+            render={({ field }) => <Select {...field} options={tagOptions} placeholder="Select a tag" />}
+          />
+        </div>
+
+        {/* Author Image*/}
+        <div className="col-span-1">
+          <label className="label">Author Image URL</label>
+          <input
+          value={user?.photoURL}
+            type="text"
+            {...register("authorImage", { required: "Author image is required" })}
+            className="input input-bordered w-full"
+            placeholder="https://example.com/author.jpg"
+          />
+          {errors.authorImage && <p className="text-red-500 text-sm">{errors.authorImage.message}</p>}
+        </div>
+
         {/* Post Description */}
         <div className="col-span-1 md:col-span-2">
           <label className="label">Post Description</label>
@@ -116,16 +140,6 @@ axiosSecure.post('/teachers', postData)
             placeholder="Write your post description here..."
           ></textarea>
           {errors.description && <p className="text-red-500 text-sm">{errors.description.message}</p>}
-        </div>
-
-        {/* Tag - react-select */}
-        <div className="col-span-1">
-          <label className="label">Tag</label>
-          <Controller
-            name="tag"
-            control={control}
-            render={({ field }) => <Select {...field} options={tagOptions} placeholder="Select a tag" />}
-          />
         </div>
 
         {/* Submit Button */}

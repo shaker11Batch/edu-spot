@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { NavLink, Outlet } from "react-router";
 import { FaUser, FaPlusCircle, FaListAlt, FaBars, FaTimes, FaBullhorn } from "react-icons/fa";
+import Header from "../../shared/Header/Header";
 
 
 const Dashboard = () => {
@@ -8,7 +9,7 @@ const Dashboard = () => {
 
   return (
     <>
-      <div className="min-h-screen flex flex-col md:flex-row bg-gray-50">
+      <div className="min-h-screen  flex flex-col md:flex-row bg-gray-50">
 
         {/* Mobile Top Bar */}
         <div className="md:hidden flex justify-between items-center bg-white shadow px-4 py-3">
@@ -83,6 +84,7 @@ const Dashboard = () => {
 
         {/* Content Area */}
         <main className="flex-1 p-6">
+          <Header></Header>
           <Outlet />
         </main>
       </div>

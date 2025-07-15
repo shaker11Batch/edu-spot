@@ -5,7 +5,7 @@ import './AllPost.css'
 import Post from './Post';
 
 const AllPost = () => {
-    const [itemPerPage, setItemPerPage] = useState(6)
+    const [itemPerPage, setItemPerPage] = useState(5)
     const [currentPage, setCurrentPage] = useState(0)
     const [count, setCount] = useState(0)
 // const count =50
@@ -40,7 +40,8 @@ const AllPost = () => {
     }, [currentPage, itemPerPage])
 
     return (
-        <>   <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
+        <>   
+        <div className='grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3'>
             {
                 posts.map(post => <Post post={post}></Post>)
             }
