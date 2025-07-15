@@ -1,21 +1,32 @@
-import { useState } from "react";
-import { FaTags,  FaThumbsDown, FaClock } from "react-icons/fa";
+
+import { use, useState } from "react";
+import { FaTags,  FaThumbsDown } from "react-icons/fa";
 import { FaThumbsUp } from "react-icons/fa";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
+import { AuthContext } from "../../shared/Context/AuthContext";
+import { toast } from "react-toastify";
 const Post = ({ post }) => {
+  const {user} =use(AuthContext)
 
-  const [upvoteCount, setUpvoteCount] = useState(post.upvote || 0);
-  const [downvoteCount, setDownvoteCount] = useState(post.downvote || 0);
+const axiosSecure= useAxiosSecure()
+  const [upVoteCount, setUpVoteCount] = useState(post.upvote || 0);
+  
 
 
-  const handleUpvote = async () => {
-    await handleVote("upvote"); // Your backend handler
-    setUpvoteCount(prev => prev + 1);
+  const handleUpVote = async (email) => {
+    await  axiosSecure.patch(`posts/${post._id}/upVote`, {email})
+    .then(res =>{
+      if (res.data?.modifiedCount > 0) {
+        setUpVoteCount(prev => prev + 1);
+        toast.success("Voted successfully");
+      } else {
+        toast.error(res.data?.message || "You already voted");
+      }
+    }).catch(error => console.log(error))
+  
   };
 
-  const handleDownvote = async () => {
-    await handleVote("downvote"); // Your backend handler
-    setDownvoteCount(prev => prev + 1);
-  };
+ 
 
 
   return (
@@ -63,18 +74,18 @@ const Post = ({ post }) => {
       {/* Vote Buttons */}
       <div className="flex gap-6 items-center text-gray-700 text-sm">
         <button
-          onClick={handleUpvote}
+          onClick={()=>{handleUpVote(user?.email)}}
           className="flex items-center gap-1 hover:text-green-600"
         >
-          <FaThumbsUp /> <span>{upvoteCount}</span>
+          <FaThumbsUp /> <span>{upVoteCount}</span>
         </button>
-
+{/* 
         <button
-          onClick={handleDownvote}
+          onClick={handleDownVote}
           className="flex items-center gap-1 hover:text-red-600"
         >
           <FaThumbsDown /> <span>{downvoteCount}</span>
-        </button>
+        </button> */}
       </div>
       </div>
     </div>

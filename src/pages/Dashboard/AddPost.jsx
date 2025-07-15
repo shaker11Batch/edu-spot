@@ -4,6 +4,7 @@ import Select from "react-select";
 import { AuthContext } from "../../shared/Context/AuthContext";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 
 const tagOptions = [
@@ -34,6 +35,7 @@ const AddPost = () => {
     axiosSecure.post('/posts', postData)
       .then(res => {
         console.log(res.data)
+        toast.success("post successfully");
       })
       .catch(error => console.log(error))
     // reset();
