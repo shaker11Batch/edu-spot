@@ -10,23 +10,23 @@ import { Link } from "react-router";
 const Post = ({ post }) => {
   const { user } = use(AuthContext)
 
-  const axiosSecure = useAxiosSecure()
-  const [upVoteCount, setUpVoteCount] = useState(post.upvote || 0);
+  // const axiosSecure = useAxiosSecure()
+  // const [upVoteCount, setUpVoteCount] = useState(post.upvote || 0);
 
 
 
-  const handleUpVote = async (email) => {
-    await axiosSecure.patch(`posts/${post._id}/upVote`, { email })
-      .then(res => {
-        if (res.data?.modifiedCount > 0) {
-          setUpVoteCount(prev => prev + 1);
-          toast.success("Voted successfully");
-        } else {
-          toast.error(res.data?.message || "You already voted");
-        }
-      }).catch(error => console.log(error))
+  // const handleUpVote = async (email) => {
+  //   await axiosSecure.patch(`posts/${post._id}/upVote`, { email })
+  //     .then(res => {
+  //       if (res.data?.modifiedCount > 0) {
+  //         setUpVoteCount(prev => prev + 1);
+  //         toast.success("Voted successfully");
+  //       } else {
+  //         toast.error(res.data?.message || "You already voted");
+  //       }
+  //     }).catch(error => console.log(error))
 
-  };
+  // };
 
 
 
@@ -75,12 +75,12 @@ const Post = ({ post }) => {
         </div>
         {/* Vote Buttons */}
         <div className="flex gap-6 items-center text-gray-700 text-sm">
-          <button
+          {/* <button
             onClick={() => { handleUpVote(user?.email) }}
             className="flex items-center gap-1 hover:text-green-600"
           >
             <FaThumbsUp /> <span>{upVoteCount}</span>
-          </button>
+          </button> */}
           {/* 
         <button
           onClick={handleDownVote}

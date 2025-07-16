@@ -13,6 +13,7 @@ import AnnouncementList from "../pages/AnnouncementList/AnnouncementList";
 import PostsDetails from "../pages/Dashboard/PostsDetails";
 import Membership from "../pages/Dashboard/Membership";
 import Payments from "../pages/Dashboard/Payments";
+import ManageUsers from "../pages/Dashboard/ManageUsers";
 
 export const router = createBrowserRouter([
     {
@@ -71,6 +72,10 @@ export const router = createBrowserRouter([
             {
                 path: 'my-posts',
                 Component: MyPost
+            },
+            {
+                path: 'manage-users',
+                Component: ManageUsers
             },
         ]
     }

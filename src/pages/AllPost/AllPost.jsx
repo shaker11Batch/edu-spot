@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { use, useEffect, useState } from 'react';
 
 import './AllPost.css'
 
 import Post from './Post';
+import { AuthContext } from '../../shared/Context/AuthContext';
 
 const AllPost = () => {
+    const {user}= use(AuthContext)
     const [itemPerPage, setItemPerPage] = useState(5)
     const [currentPage, setCurrentPage] = useState(0)
     const [count, setCount] = useState(0)
@@ -34,7 +36,7 @@ const AllPost = () => {
     const [posts, setPost] = useState([])
   
     useEffect(() => {
-        fetch(`http://localhost:5000/posts?page=${currentPage}&size=${itemPerPage}`)
+        fetch(`http://localhost:5000/posts?page=${currentPage}&size=${itemPerPage}`,{email: user?.email})
             .then(res => res.json())
             .then(data => setPost(data))
     }, [currentPage, itemPerPage])

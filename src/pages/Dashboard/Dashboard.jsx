@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { NavLink, Outlet } from "react-router";
-import { FaUser, FaPlusCircle, FaListAlt, FaBars, FaTimes, FaBullhorn } from "react-icons/fa";
+import { FaUser, FaPlusCircle, FaListAlt, FaBars, FaTimes, FaBullhorn, FaUsers } from "react-icons/fa";
 import Header from "../../shared/Header/Header";
 
 
@@ -53,32 +53,45 @@ const Dashboard = () => {
               </NavLink>
             </li>
             <li>
-              <NavLink
-                to="/dashboard/announcements"
-                className={({ isActive }) =>
-                  isActive
-                    ? "flex items-center gap-2 text-blue-600 font-semibold"
-                    : "flex items-center gap-2 hover:text-blue-500"
-                }
-                onClick={() => setSidebarOpen(false)}
-              >
-                <FaBullhorn /> Announcements
-              </NavLink>
-            </li>
+            <NavLink
+              to="/dashboard/my-posts"
+              className={({ isActive }) =>
+                isActive
+                  ? "flex items-center gap-2 text-blue-600 font-semibold"
+                  : "flex items-center gap-2 hover:text-blue-500"
+              }
+              onClick={() => setSidebarOpen(false)}
+            >
+              <FaListAlt /> My Posts
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="/dashboard/manage-users"
+              className={({ isActive }) =>
+                isActive
+                  ? "flex items-center gap-1 text-blue-600 font-semibold"
+                  : "flex items-center gap-1 hover:text-blue-500"
+              }
+            >
+              <FaUsers /> Manage Users
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="/dashboard/announcements"
+              className={({ isActive }) =>
+                isActive
+                  ? "flex items-center gap-2 text-blue-600 font-semibold"
+                  : "flex items-center gap-2 hover:text-blue-500"
+              }
+              onClick={() => setSidebarOpen(false)}
+            >
+              <FaBullhorn /> Announcements
+            </NavLink>
+          </li>
 
-            <li>
-              <NavLink
-                to="/dashboard/my-posts"
-                className={({ isActive }) =>
-                  isActive
-                    ? "flex items-center gap-2 text-blue-600 font-semibold"
-                    : "flex items-center gap-2 hover:text-blue-500"
-                }
-                onClick={() => setSidebarOpen(false)}
-              >
-                <FaListAlt /> My Posts
-              </NavLink>
-            </li>
+         
           </ul>
         </aside>
 
