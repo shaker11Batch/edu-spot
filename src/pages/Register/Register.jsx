@@ -41,7 +41,7 @@ const Register = () => {
                 const userInfo = {
                     name: data?.name,
                     photo: profilePic,
-                    email,
+                    email: data?.email,
                     badge: "Bronze"
                 }
                 axiosSecure.post('/user', userInfo)
@@ -50,10 +50,10 @@ const Register = () => {
                         // if(res?.data?.)
 
                     }).catch(error => console.log(error))
-                    toast.success("🎉 Registration Successful!", {
-                        position: "top-right",
-                        autoClose: 3000,
-                      });
+                toast.success("🎉 Registration Successful!", {
+                    position: "top-right",
+                    autoClose: 3000,
+                });
             })
             .catch(error => console.log(error))
         reset();
