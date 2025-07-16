@@ -7,10 +7,13 @@ import { AuthContext } from "../../shared/Context/AuthContext";
 import { updateProfile } from "firebase/auth";
 import { auth } from "../../Firebase/firebase.init";
 import axios from "axios";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
+import { toast } from "react-toastify";
 
 const Register = () => {
     const [profilePic, setProfilePic] = useState('')
     const { createUser, setUser } = use(AuthContext)
+    const axiosSecure = useAxiosSecure()
     const {
         register,
         handleSubmit,
@@ -23,18 +26,34 @@ const Register = () => {
         createUser(data.email, data.password)
             .then(result => {
                 const user = result.user;
-                console.log('shker..............', user)
 
                 // update profile 
                 const profile = { displayName: data?.name, photoURL: profilePic }
                 updateProfile(auth.currentUser, profile)
                     .then(() => {
                         console.log('user profile update')
+
                         setUser(...user, profile)
                     })
                     .catch(error => console.log(error))
 
+                // user add database with role 
+                const userInfo = {
+                    name: data?.name,
+                    photo: profilePic,
+                    email,
+                    badge: "Bronze"
+                }
+                axiosSecure.post('/user', userInfo)
+                    .then(res => {
+                        console.log(res.data)
+                        // if(res?.data?.)
 
+                    }).catch(error => console.log(error))
+                    toast.success("🎉 Registration Successful!", {
+                        position: "top-right",
+                        autoClose: 3000,
+                      });
             })
             .catch(error => console.log(error))
         reset();

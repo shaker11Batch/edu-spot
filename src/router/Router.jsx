@@ -10,6 +10,9 @@ import AddPost from "../pages/Dashboard/AddPost";
 import MyPost from "../pages/Dashboard/MyPost";
 import AnnouncementForm from "../pages/Dashboard/AnnouncementForm";
 import AnnouncementList from "../pages/AnnouncementList/AnnouncementList";
+import PostsDetails from "../pages/Dashboard/PostsDetails";
+import Membership from "../pages/Dashboard/Membership";
+import Payments from "../pages/Dashboard/Payments";
 
 export const router = createBrowserRouter([
     {
@@ -25,6 +28,18 @@ export const router = createBrowserRouter([
                 path: 'auth-announce',
                 Component: AnnouncementList
 
+            },
+            {
+                path: 'posts/:id', 
+                Component: PostsDetails
+            },
+            {
+                path: '/membership', 
+                Component: Membership
+            },
+            {
+                path: '/payments', 
+                Component: Payments
             },
             {
                 path: '/register',
