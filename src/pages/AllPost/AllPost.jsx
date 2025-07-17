@@ -49,7 +49,7 @@ const AllPost = () => {
             }
 
         </div>
-            <div className='pagination'>
+            {/* <div className='pagination'>
                 {
                     pages.map(page => <button
                         className={currentPage === page && 'selected'}
@@ -57,11 +57,44 @@ const AllPost = () => {
                         key={page}>{page}</button>)
                 }
                 <select value={itemPerPage} onChange={handleItemPerPage} name="" id="">
-                    <option value="6">6</option>
-                    <option value="20">20</option>
+                    <option value="5">5</option>
                     <option value="10">10</option>
+                    <option value="20">20</option>
                 </select>
-            </div>
+            </div> */}
+            <div className="flex flex-col md:flex-row justify-center items-center gap-4 mt-6 mb-4">
+  {/* Pagination Buttons */}
+  <div className="flex flex-wrap gap-2">
+    {pages.map((page) => (
+      <button
+        key={page}
+        onClick={() => setCurrentPage(page)}
+        className={`px-4 py-2 rounded-lg border transition duration-200 ${
+          currentPage === page
+            ? "bg-blue-600 text-white font-semibold border-blue-600"
+            : "bg-white text-gray-700 border-gray-300 hover:bg-blue-100"
+        }`}
+      >
+        {page}
+      </button>
+    ))}
+  </div>
+
+  {/* Item Per Page Selector */}
+  <div className="flex items-center gap-2">
+    <select
+      id="perPage"
+      value={itemPerPage}
+      onChange={handleItemPerPage}
+      className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+    >
+      <option value="5">5</option>
+      <option value="10">10</option>
+      <option value="20">20</option>
+    </select>
+  </div>
+</div>
+
         </>
     );
 };

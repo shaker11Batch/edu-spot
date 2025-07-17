@@ -3,16 +3,19 @@ import { FaTrashAlt, FaCommentDots, FaHeart, FaCalendarAlt } from "react-icons/f
 import { AuthContext } from "../../shared/Context/AuthContext";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import { toast } from "react-toastify";
+import LoadingSpinner from "../../shared/LoadingSpinner";
 
 const MyPost = () => {
     const [myPosts, setMyPosts] = useState([])
-    const { user } = use(AuthContext)
+    const [postLoading, setPostLoading] = useState(true) 
+    const { user, loading } = use(AuthContext)
     const axiosSecure = useAxiosSecure()
 
    useEffect(()=>{
     axiosSecure(`/myPosts?email=${user?.email}`)
     .then(res => {
         setMyPosts(res?.data)
+        setPostLoading(false)
     })
     .catch(error => {
         console.log(error)
@@ -29,6 +32,7 @@ const MyPost = () => {
             .catch(error => console.log(error))
     }
 
+    if(postLoading) return <LoadingSpinner></LoadingSpinner>
     return (
         <div className="overflow-x-auto mt-10">
       <table className="min-w-full table-auto bg-white shadow-xl rounded-xl overflow-hidden border border-gray-200">

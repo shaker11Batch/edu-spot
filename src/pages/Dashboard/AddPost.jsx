@@ -12,8 +12,12 @@ const tagOptions = [
   { value: "technology", label: "Technology" },
   { value: "education", label: "Education" },
   { value: "health", label: "Health" },
+  { value: "environment", label: "Environment" },
+  { value: "science", label: "Science" },
+  { value: "social", label: "Social" },
   { value: "sports", label: "Sports" },
   { value: "others", label: "Others" },
+ 
 ];
 
 const AddPost = () => {
@@ -28,8 +32,8 @@ const AddPost = () => {
       ...data,
       imageUpload,
       tag: data.tag?.value || "",
-      upVote: 0,
-      downVote: 0,
+      upVote: [],
+      downVote: [],
     };
     console.log("Post Data:", postData);
     // Submit to backend here

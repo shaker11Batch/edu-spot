@@ -1,33 +1,39 @@
-import { useEffect, useState } from "react";
-import useAxiosSecure from "../../hooks/useAxiosSecure";
+import { useNavigate } from 'react-router';
 
+const TagsSection = () => {
 
-const TagsSection = ({ onTagSelect }) => {
-  const [tags, setTags] = useState([]);
-  const [axiosSecure] = useAxiosSecure();
+  const tags = [
+    { name: "Education", image: "/images/education.png" },
+    { name: "Health", image: "/images/health.png" },
+    { name: "Technology", image: "/images/tech.png" },
+    { name: "Environment", image: "/images/environment.png" },
+    { name: "Science", image: "/images/science.png" },
+    { name: "Social", image: "/images/social.png" },
+  ];
 
-  useEffect(() => {
-    axiosSecure.get("/posts/tags") 
-      .then(res => setTags(res.data))
-      .catch(err => console.error(err));
-  }, [axiosSecure]);
 
   return (
-    <div className="my-8">
-      <h2 className="text-xl font-bold text-gray-700 mb-4">Browse by Tags</h2>
-      <div className="flex flex-wrap gap-3">
-        {tags.map((tag, idx) => (
-          <button
-            key={idx}
-            onClick={() => onTagSelect(tag)}
-            className="px-4 py-1 bg-blue-100 text-blue-700 rounded-full text-sm hover:bg-blue-200 transition"
+    <section className="max-w-7xl mx-auto px-4 py-8">
+      <h2 className="text-2xl font-bold mb-6">Explore by Tags</h2>
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
+        {tags.map((tag) => (
+          <div
+            key={tag.name}
+            // onClick={() => handleTagClick(tag.name)}
+            className="cursor-pointer bg-white shadow hover:shadow-lg transition p-4 rounded-xl flex flex-col items-center text-center hover:bg-blue-50"
           >
-            #{tag}
-          </button>
+            {/* <img
+              src={tag.image}
+              alt={tag.name}
+              className="w-16 h-16 object-cover mb-2 rounded-full"
+            /> */}
+            <span className="text-sm font-medium text-gray-700">#{tag.name}</span>
+          </div>
         ))}
       </div>
-    </div>
+    </section>
   );
 };
 
 export default TagsSection;
+

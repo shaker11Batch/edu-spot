@@ -1,35 +1,49 @@
 import { use, useEffect, useState } from "react";
 import { useParams } from "react-router";
 
-import { FaThumbsUp, FaThumbsDown, FaCommentDots, FaTags, FaClock } from "react-icons/fa";
-import { FacebookShareButton, FacebookIcon } from "react-share";
+import { FaTags, FaClock } from "react-icons/fa";
+
 import { AuthContext } from "../../shared/Context/AuthContext";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
+import LoadingSpinner from "../../shared/LoadingSpinner";
 
 
 const PostDetails = () => {
+  const { user, } = use(AuthContext);
   const { id } = useParams();
   const [post, setPost] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [liked, setLiked] = useState(post?.upVote?.includes(user.email))
+  const [likeCount, setLikeCount] = useState(post?.upVote.length || 0)
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
-  const { user } = use(AuthContext);
   const shareUrl = `${window.location.origin}/post/${id}`;
   const axiosSecure = useAxiosSecure()
 
   useEffect(() => {
     axiosSecure.get(`/posts/${id}`).then((res) => setPost(res.data));
-
+    setLoading(false)
   }, [id, post]);
 
 
+  const handleLike = () => {
+    if (user.email === post.authorEmail) {
+      alert('lojja kore na')
+    }
+    else {
+      axiosSecure.patch(`/like/${post._id}`, { email: user?.email })
+        .then(res => {
+          console.log(res.data)
+          const isLiked = res?.data?.liked
+          setLiked(isLiked)
+          setLikeCount(prev => isLiked ? prev + 1 : prev - 1)
+        }).catch(error => {
+          console.log(error)
+        })
+    }
+  }
 
 
-  const handleVote = async (type) => {
-    if (!user) return alert("Login required to vote");
-    await axiosSecure.patch(`/posts/${id}/${type}`, { email: user.email }).then((res) => {
-      setPost(res.data);
-    });
-  };
 
   const handleComment = async () => {
     if (!user || !comment.trim()) return;
@@ -44,7 +58,7 @@ const PostDetails = () => {
     setComment("");
   };
 
-  if (!post) return <p className="text-center py-10 text-lg font-semibold">Loading post details...</p>;
+  if (!post || loading) return <LoadingSpinner></LoadingSpinner>;
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-4">
@@ -66,18 +80,21 @@ const PostDetails = () => {
           </span>
         </div>
 
-        <div className="flex items-center gap-6 mb-8">
-          <button onClick={() => handleVote("upvote")} className="flex items-center gap-2 text-green-600 font-semibold hover:text-green-800">
-            <FaThumbsUp className="text-xl" /> {post.upvote || 0}
-          </button>
-          <button onClick={() => handleVote("downvote")} className="flex items-center gap-2 text-red-500 font-semibold hover:text-red-700">
-            <FaThumbsDown className="text-xl" /> {post.downvote || 0}
-          </button>
-          <FacebookShareButton url={shareUrl} quote={post.title}>
-            <FacebookIcon size={32} round />
-          </FacebookShareButton>
-        </div>
+        <div className="flex items-center gap-6">
+          <button
+            onClick={handleLike}
 
+            className={`group flex items-center gap-2 px-4 py-2 rounded-full transition-all duration-300 shadow-sm
+        ${liked ? "bg-blue-500 text-white" : "bg-white hover:bg-blue-100 text-blue-600"}
+        border border-blue-200 hover:shadow-md`}
+          >
+            <span className={`text-xl transition-transform ${liked ? "scale-110 animate-ping-once" : ""}`}>
+              👍
+            </span>
+            <span className="font-semibold text-sm">{likeCount}</span>
+          </button>
+
+        </div>
         <div className="mt-10">
           <h3 className="text-2xl font-bold text-gray-800 mb-4">Comments</h3>
           {user ? (
@@ -94,7 +111,7 @@ const PostDetails = () => {
             <p className="text-gray-500 italic">Please log in to comment.</p>
           )}
 
-         
+
         </div>
       </div>
     </div>

@@ -21,7 +21,7 @@ const Banner = () => {
   return (
     <>
       <div
-        className="hero min-h-[80vh] bg-cover bg-center"
+        className="hero h-[400px] md:min-h-[80vh] bg-cover bg-center"
         style={{
           backgroundImage: "url('https://source.unsplash.com/1600x900/?technology')",
         }}

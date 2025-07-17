@@ -3,13 +3,14 @@ import { NavLink, Outlet } from "react-router";
 import { FaUser, FaPlusCircle, FaListAlt, FaBars, FaTimes, FaBullhorn, FaUsers } from "react-icons/fa";
 import Header from "../../shared/Header/Header";
 import useUserRole from "../../hooks/useUserRole";
+import LoadingSpinner from "../../shared/LoadingSpinner";
 
 
 const Dashboard = () => {
   const [role, roleLoading] = useUserRole()
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  if(roleLoading) return <p className="text-center text-4xl font-bold my-14">Loading ................</p>
+  if(roleLoading) return <LoadingSpinner/>
   return (
     <>
       <div className="min-h-screen  flex flex-col md:flex-row bg-gray-50">

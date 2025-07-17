@@ -10,10 +10,11 @@ import AddPost from "../pages/Dashboard/AddPost";
 import MyPost from "../pages/Dashboard/MyPost";
 import AnnouncementForm from "../pages/Dashboard/AnnouncementForm";
 import AnnouncementList from "../pages/AnnouncementList/AnnouncementList";
-import PostsDetails from "../pages/Dashboard/PostsDetails";
 import Membership from "../pages/Dashboard/Membership";
 import Payments from "../pages/Dashboard/Payments";
 import ManageUsers from "../pages/Dashboard/ManageUsers";
+import PrivateRoute from "../components/Private/PrivateRoute";
+import PostDetails from "../pages/Dashboard/PostsDetails";
 
 export const router = createBrowserRouter([
     {
@@ -31,15 +32,16 @@ export const router = createBrowserRouter([
 
             },
             {
-                path: 'posts/:id', 
-                Component: PostsDetails
+                path: 'posts/:id',
+                element: <PrivateRoute><PostDetails></PostDetails></PrivateRoute>
             },
             {
-                path: '/membership', 
-                Component: Membership
+                path: '/membership',
+                element: <PrivateRoute><Membership></Membership></PrivateRoute>
             },
+
             {
-                path: '/payments', 
+                path: '/payments',
                 Component: Payments
             },
             {
@@ -55,7 +57,7 @@ export const router = createBrowserRouter([
     },
     {
         path: '/dashboard',
-        Component: Dashboard,
+        element: <PrivateRoute><Dashboard></Dashboard></PrivateRoute>,
         children: [
             {
                 path: 'profile',
@@ -66,7 +68,7 @@ export const router = createBrowserRouter([
                 Component: AddPost
             },
             {
-                path: 'announcements',
+                path: 'add-announcements',
                 Component: AnnouncementForm,
             },
             {
