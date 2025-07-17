@@ -65,7 +65,7 @@ const Header = () => {
                     : "flex items-center gap-1 hover:text-blue-500"
                 }
               >
-                <FaBell /> Notification
+                <p className="text-red-600 font-bold text-xl absolute ">{0}</p><FaBell /> Announcement
               </NavLink>
             </li>
             <li>

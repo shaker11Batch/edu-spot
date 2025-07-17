@@ -42,7 +42,8 @@ const Register = () => {
                     name: data?.name,
                     photo: profilePic,
                     email: data?.email,
-                    badge: "Bronze"
+                    badge: "Bronze",
+                    role: "user"
                 }
                 axiosSecure.post('/user', userInfo)
                     .then(res => {

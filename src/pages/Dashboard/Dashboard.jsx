@@ -2,11 +2,14 @@ import { useState } from "react";
 import { NavLink, Outlet } from "react-router";
 import { FaUser, FaPlusCircle, FaListAlt, FaBars, FaTimes, FaBullhorn, FaUsers } from "react-icons/fa";
 import Header from "../../shared/Header/Header";
+import useUserRole from "../../hooks/useUserRole";
 
 
 const Dashboard = () => {
+  const [role, roleLoading] = useUserRole()
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  if(roleLoading) return <p className="text-center text-4xl font-bold my-14">Loading ................</p>
   return (
     <>
       <div className="min-h-screen  flex flex-col md:flex-row bg-gray-50">
@@ -53,45 +56,50 @@ const Dashboard = () => {
               </NavLink>
             </li>
             <li>
-            <NavLink
-              to="/dashboard/my-posts"
-              className={({ isActive }) =>
-                isActive
-                  ? "flex items-center gap-2 text-blue-600 font-semibold"
-                  : "flex items-center gap-2 hover:text-blue-500"
-              }
-              onClick={() => setSidebarOpen(false)}
-            >
-              <FaListAlt /> My Posts
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/dashboard/manage-users"
-              className={({ isActive }) =>
-                isActive
-                  ? "flex items-center gap-1 text-blue-600 font-semibold"
-                  : "flex items-center gap-1 hover:text-blue-500"
-              }
-            >
-              <FaUsers /> Manage Users
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/dashboard/announcements"
-              className={({ isActive }) =>
-                isActive
-                  ? "flex items-center gap-2 text-blue-600 font-semibold"
-                  : "flex items-center gap-2 hover:text-blue-500"
-              }
-              onClick={() => setSidebarOpen(false)}
-            >
-              <FaBullhorn /> Announcements
-            </NavLink>
-          </li>
+              <NavLink
+                to="/dashboard/my-posts"
+                className={({ isActive }) =>
+                  isActive
+                    ? "flex items-center gap-2 text-blue-600 font-semibold"
+                    : "flex items-center gap-2 hover:text-blue-500"
+                }
+                onClick={() => setSidebarOpen(false)}
+              >
+                <FaListAlt /> My Posts
+              </NavLink>
+            </li>
+            {
+              role == 'admin' ?
+                <>
+                  <li>
+                    <NavLink
+                      to="/dashboard/manage-users"
+                      className={({ isActive }) =>
+                        isActive
+                          ? "flex items-center gap-1 text-blue-600 font-semibold"
+                          : "flex items-center gap-1 hover:text-blue-500"
+                      }
+                    >
+                      <FaUsers /> Manage Users
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink
+                      to="/dashboard/announcements"
+                      className={({ isActive }) =>
+                        isActive
+                          ? "flex items-center gap-2 text-blue-600 font-semibold"
+                          : "flex items-center gap-2 hover:text-blue-500"
+                      }
+                      onClick={() => setSidebarOpen(false)}
+                    >
+                      <FaBullhorn /> Announcements
+                    </NavLink>
+                  </li>
+                </> : ''
+            }
 
-         
+
           </ul>
         </aside>
 

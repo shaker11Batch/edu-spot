@@ -5,6 +5,7 @@ import { AuthContext } from "../../shared/Context/AuthContext";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router";
 
 
 const tagOptions = [
@@ -19,6 +20,7 @@ const AddPost = () => {
   const [imageUpload, setImageUpload] = useState('')
   const { user } = use(AuthContext)
   const axiosSecure = useAxiosSecure();
+  const navigate = useNavigate()
   const { register, handleSubmit, control, reset, formState: { errors } } = useForm();
 
   const onSubmit = (data) => {
@@ -39,6 +41,7 @@ const AddPost = () => {
       })
       .catch(error => console.log(error))
     // reset();
+    navigate('/')
   };
 
   const handleImageUpload = async e => {
@@ -146,7 +149,7 @@ const AddPost = () => {
 
         {/* Submit Button */}
         <div className="col-span-1 md:col-span-2 text-center mt-4">
-          <button className="btn btn-primary w-full md:w-1/2" type="submit">
+          <button  className="btn btn-primary w-full md:w-1/2" type="submit">
             Submit Post
           </button>
         </div>

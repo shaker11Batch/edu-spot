@@ -23,8 +23,9 @@ const ManageUsers = () => {
     }, [axiosSecure]);
 
     const handleMakeAdmin = async (id) => {
-        await axiosSecure.patch(`/users/admin/${id}`);
+    const admin =    await axiosSecure.patch(`/user/admin/${id}`);
         // fetchUsers();
+        console.log(admin)
     };
 
     return (
@@ -59,7 +60,7 @@ const ManageUsers = () => {
                         {users.map((user) => (
                             <tr key={user._id} className="border-t">
                                 <td className="py-3 px-4">{user.name}</td>
-                                <td className="py-3 px-4">{user.authorEmail}</td>
+                                <td className="py-3 px-4">{user.email}</td>
                                 <td className="py-3 px-4 text-center">
                                     {user.role === "admin" ? "Admin" : "User"}
                                 </td>
