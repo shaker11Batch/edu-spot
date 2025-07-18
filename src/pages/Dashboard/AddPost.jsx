@@ -1,4 +1,4 @@
-import { use, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import Select from "react-select";
 import { AuthContext } from "../../shared/Context/AuthContext";
@@ -6,6 +6,7 @@ import useAxiosSecure from "../../hooks/useAxiosSecure";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router";
+import useUserRole from "../../hooks/useUserRole";
 
 
 const tagOptions = [
@@ -17,15 +18,19 @@ const tagOptions = [
   { value: "social", label: "Social" },
   { value: "sports", label: "Sports" },
   { value: "others", label: "Others" },
- 
+
 ];
 
 const AddPost = () => {
+
+
   const [imageUpload, setImageUpload] = useState('')
   const { user } = use(AuthContext)
   const axiosSecure = useAxiosSecure();
   const navigate = useNavigate()
   const { register, handleSubmit, control, reset, formState: { errors } } = useForm();
+
+
 
   const onSubmit = (data) => {
     const postData = {
@@ -44,7 +49,7 @@ const AddPost = () => {
         toast.success("post successfully");
       })
       .catch(error => console.log(error))
-    // reset();
+    reset();
     navigate('/')
   };
 
@@ -60,6 +65,7 @@ const AddPost = () => {
     setImageUpload(res.data.data.url)
 
   }
+
 
   return (
     <div className="max-w-3xl mx-auto bg-white shadow-md rounded-xl p-6 mt-10 mb-10 w-full">
@@ -83,9 +89,9 @@ const AddPost = () => {
         <div className="col-span-1">
           <label className="label">Author Name</label>
           <input
-          value={user?.displayName}
+            value={user?.displayName}
             type="text"
-            {...register("authorName", )}
+            {...register("authorName",)}
             className="input input-bordered w-full"
             placeholder="John Doe"
           />
@@ -131,7 +137,7 @@ const AddPost = () => {
         <div className="col-span-1">
           <label className="label">Author Image URL</label>
           <input
-          value={user?.photoURL}
+            value={user?.photoURL}
             type="text"
             {...register("authorImage", { required: "Author image is required" })}
             className="input input-bordered w-full"
@@ -153,7 +159,7 @@ const AddPost = () => {
 
         {/* Submit Button */}
         <div className="col-span-1 md:col-span-2 text-center mt-4">
-          <button  className="btn btn-primary w-full md:w-1/2" type="submit">
+          <button className="btn btn-primary w-full md:w-1/2" type="submit">
             Submit Post
           </button>
         </div>

@@ -24,7 +24,7 @@ const PostDetails = () => {
 
   // const shareUrl = `${window.location.origin}/post/${id}`;
   const axiosSecure = useAxiosSecure()
-  const token = user.accessToken;
+
 
   useEffect(() => {
     axiosSecure.get(`/posts/${id}`
@@ -32,7 +32,7 @@ const PostDetails = () => {
     .then((res) => setPost(res.data));
     setLoading(false)
 
-  }, [id, post, token ]);
+  }, [id, post ]);
 
   useEffect(()=>{
     axiosSecure(`/comments/${post?._id}`)
@@ -66,6 +66,7 @@ const PostDetails = () => {
     const newComment = {
       name: user?.displayName,
       title: post.title,
+      photo: user.photoURL,
       email: user.email,
       comment,
       postId: id,

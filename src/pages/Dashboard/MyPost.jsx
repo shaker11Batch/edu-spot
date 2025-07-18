@@ -5,6 +5,7 @@ import useAxiosSecure from "../../hooks/useAxiosSecure";
 import { toast } from "react-toastify";
 import LoadingSpinner from "../../shared/LoadingSpinner";
 import Swal from "sweetalert2";
+import { Link } from "react-router";
 
 const MyPost = () => {
     const [myPosts, setMyPosts] = useState([])
@@ -68,7 +69,6 @@ const MyPost = () => {
         <thead className="bg-gradient-to-r from-blue-200 to-blue-100 text-blue-800">
           <tr>
             <th className="py-4 px-6 text-left font-semibold">📌 Title</th>
-            <th className="py-4 px-6 text-center font-semibold">💬 Comments</th>
             <th className="py-4 px-6 text-center font-semibold">❤️ Votes</th>
             <th className="py-4 px-6 text-center font-semibold">📅 Date</th>
             <th className="py-4 px-6 text-center font-semibold">🗑️ Delete</th>
@@ -81,18 +81,10 @@ const MyPost = () => {
               className="border-b hover:bg-blue-50 transition-all duration-300"
             >
               <td className="py-3 px-6 font-medium">{post.title}</td>
-              <td className="py-3 px-6 text-center">
-                <button
-                  onClick={() => handleComment(post._id)}
-                  className="text-blue-600 hover:text-blue-800 transition"
-                  title="Comment"
-                >
-                  <FaCommentDots size={18} />
-                </button>
-              </td>
+             
               <td className="py-3 px-6 text-center text-green-600 font-semibold flex justify-center items-center gap-1">
                 <FaHeart className="text-red-500" />{" "}
-                {post.upVote - post.downVote}
+                {post.upVote.length +1}
               </td>
               <td className="py-3 px-6 text-center text-sm text-gray-500">
                 <div className="flex justify-center items-center gap-1">
