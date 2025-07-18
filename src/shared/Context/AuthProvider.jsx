@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
-
 import { GoogleAuthProvider, createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut } from 'firebase/auth';
-import { AuthContext } from './AuthContext';
 import { auth } from '../../Firebase/firebase.init';
-import useAxiosSecure from '../../hooks/useAxiosSecure';
+import { AuthContext } from './AuthContext';
 
 const googleProvider = new GoogleAuthProvider()
 
+
 const AuthProvider = ({ children }) => {
-   
+
     const [user, setUser] = useState(null)
     const [loading, setLoading] = useState(true)
 
@@ -24,7 +23,7 @@ const AuthProvider = ({ children }) => {
         return signInWithEmailAndPassword(auth, email, password)
     }
 
-    const signInWithGoogle = () => {
+    const googleLogIn = () => {
         setLoading(true)
         signInWithPopup(auth, googleProvider)
     }
@@ -39,7 +38,7 @@ const AuthProvider = ({ children }) => {
         setUser,
         loading,
         createUser,
-        signInWithGoogle,
+        googleLogIn,
         signIn,
         logOut
     }
@@ -48,7 +47,7 @@ const AuthProvider = ({ children }) => {
     useEffect(() => {
         const unSubscribe = onAuthStateChanged(auth, currentUser => {
             setUser(currentUser)
-            console.log('user in the observer', currentUser)
+            console.log('provide ', currentUser)
             setLoading(false)
         });
         return () => {

@@ -42,7 +42,7 @@ const RecentThreePosts = ({recentPosts}) => {
             <FaTags /> <span>{post.tag}</span>
           </div>
           <div className="flex items-center gap-1 text-green-600 font-medium">
-            <FaThumbsUp /> <span>{post.upVote || 0}</span>
+            <FaThumbsUp /> <span>{post.upVote.length || 0}</span>
           </div>
         </div>
       </div>

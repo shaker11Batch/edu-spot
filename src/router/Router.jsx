@@ -21,7 +21,7 @@ export const router = createBrowserRouter([
     {
         path: '/',
         Component: MainLayout,
-        errorElement: <Error></Error>,
+        // errorElement: <Error></Error>,
         children: [
             {
                 index: true,
@@ -34,11 +34,11 @@ export const router = createBrowserRouter([
             },
             {
                 path: 'posts/:id',
-                element: <PostDetails></PostDetails>
+                element: <PrivateRoute><PostDetails></PostDetails></PrivateRoute>
             },
             {
                 path: '/membership',
-                element: <Membership></Membership>
+                element: <PrivateRoute><Membership></Membership></PrivateRoute>
             },
 
             {
@@ -58,7 +58,7 @@ export const router = createBrowserRouter([
     },
     {
         path: '/dashboard',
-        element:<Dashboard></Dashboard>,
+        element:<PrivateRoute><Dashboard></Dashboard></PrivateRoute>,
         children: [
             {
                 path: 'profile',

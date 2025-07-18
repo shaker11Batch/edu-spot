@@ -1,18 +1,18 @@
 import { useForm } from "react-hook-form";
-import { FaUser, FaImage, FaEnvelope, FaLock } from "react-icons/fa";
+import { FaUser, FaImage, FaEnvelope, FaLock, FaGoogle } from "react-icons/fa";
 import { Link, useNavigate } from "react-router";
 
 import { use, useState } from "react";
 import { AuthContext } from "../../shared/Context/AuthContext";
 import { updateProfile } from "firebase/auth";
 import { auth } from "../../Firebase/firebase.init";
-import axios from "axios";
+
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import { toast } from "react-toastify";
 
 const Register = () => {
     const [profilePic, setProfilePic] = useState('')
-    const { createUser, setUser } = use(AuthContext)
+    const { createUser, setUser, googleLogIn } = use(AuthContext)
     const axiosSecure = useAxiosSecure()
     const navigate = useNavigate()
     const {
@@ -35,7 +35,7 @@ const Register = () => {
                         console.log('user profile update')
 
                         setUser(...user, profile)
-                        
+
                     })
                     .catch(error => console.log(error))
 
@@ -48,7 +48,7 @@ const Register = () => {
                     role: "user",
                     createdAt: new Date().toLocaleString()
                 }
-             
+
                 axiosSecure.post('/user', userInfo)
                     .then(res => {
                         console.log(res.data)
@@ -63,6 +63,37 @@ const Register = () => {
             .catch(error => console.log(error))
         reset();
     };
+
+
+    const handleGoogleSignUp = () => {
+        googleLogIn()
+          .then(result => {
+            const user = result.user;
+            const userInfo = {
+              name: user.displayName,
+              photo: user.photoURL,
+              email: user.email,
+              badge: "Bronze",
+              role: "user",
+              createdAt: new Date().toLocaleString()
+            };
+      
+            axiosSecure.post('/user', userInfo)
+              .then(res => {
+                console.log("Google user saved:", res.data);
+                toast.success("🎉 Logged in with Google!", { autoClose: 3000 });
+                navigate('/');
+              }).catch(err => console.log(err));
+          })
+          .catch(err => {
+            console.error("Google Sign-in Error:", err);
+            toast.error("Google sign-in failed");
+          });
+      };
+      
+
+
+   
 
 
     const handleImageUpload = async e => {
@@ -165,6 +196,17 @@ const Register = () => {
                             Sign Up
                         </button>
                     </form>
+
+                    <div className="mt-4">
+                        <button
+                            onClick={handleGoogleSignUp}
+                            className="btn w-full flex items-center gap-2 justify-center bg-red-500 hover:bg-red-600 text-white"
+                        >
+                            <FaGoogle className="text-lg" />
+                            Sign up with Google
+                        </button>
+                    </div>
+
                     {/* New User Redirect */}
                     <p className="text-center text-sm mt-4">
                         Already have an account?{" "}

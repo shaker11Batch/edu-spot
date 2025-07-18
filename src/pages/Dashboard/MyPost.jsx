@@ -4,6 +4,7 @@ import { AuthContext } from "../../shared/Context/AuthContext";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import { toast } from "react-toastify";
 import LoadingSpinner from "../../shared/LoadingSpinner";
+import Swal from "sweetalert2";
 
 const MyPost = () => {
     const [myPosts, setMyPosts] = useState([])
@@ -23,14 +24,42 @@ const MyPost = () => {
    },[axiosSecure])
 
 
-    const handleDelete = id => {
-        axiosSecure.delete(`/myPosts/${id}`)
-            .then(res => {
-                console.log(res.data)
-                toast('Deleted post')
-            })
-            .catch(error => console.log(error))
-    }
+ 
+      
+
+    const handleDelete = (id) => {
+      console.log('deleted by id', id)
+
+      Swal.fire({
+          title: "Are you sure?",
+          text: "You won't be able to revert this!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, delete it!"
+      }).then((result) => {
+
+          if (result.isConfirmed) {
+              axiosSecure.delete(`/myPosts/${id}`)
+                  .then(res => {
+                      console.log(res)
+                      if (res?.data?.deletedCount) {
+                          Swal.fire({
+                              title: "Deleted!",
+                              text: "Your file has been deleted.",
+                              icon: "success"
+                          });
+                      }
+                  })
+          }
+
+          
+          const remainingPost = myPosts.filter(post => post._id !== id)
+          setMyPosts(remainingPost)
+      });
+  }
+
 
     if(postLoading) return <LoadingSpinner></LoadingSpinner>
     return (
