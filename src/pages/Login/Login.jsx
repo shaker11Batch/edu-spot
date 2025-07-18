@@ -1,12 +1,15 @@
 import { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { FaEnvelope, FaLock } from "react-icons/fa";
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { AuthContext } from "../../shared/Context/AuthContext";
+import { toast } from "react-toastify";
 
 
 const Login = () => {
     const {signIn} = useContext(AuthContext)
+    const navigate = useNavigate()
+    const location = useLocation()  
     const {
         register,
         handleSubmit,
@@ -18,6 +21,8 @@ const Login = () => {
         signIn(data.email, data.password)
         .then(result =>{
             console.log(result.user)
+            toast('successfully login')
+            navigate(`${location.state ? location.state : '/'}`)
         })
         .catch(error =>console.log(error))
         // handle login logic here

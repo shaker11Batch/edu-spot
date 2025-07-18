@@ -15,6 +15,7 @@ import Payments from "../pages/Dashboard/Payments";
 import ManageUsers from "../pages/Dashboard/ManageUsers";
 import PrivateRoute from "../components/Private/PrivateRoute";
 import PostDetails from "../pages/Dashboard/PostsDetails";
+import PaymentHistory from "../pages/Dashboard/PaymentHistory";
 
 export const router = createBrowserRouter([
     {
@@ -33,11 +34,11 @@ export const router = createBrowserRouter([
             },
             {
                 path: 'posts/:id',
-                element: <PrivateRoute><PostDetails></PostDetails></PrivateRoute>
+                element: <PostDetails></PostDetails>
             },
             {
                 path: '/membership',
-                element: <PrivateRoute><Membership></Membership></PrivateRoute>
+                element: <Membership></Membership>
             },
 
             {
@@ -57,7 +58,7 @@ export const router = createBrowserRouter([
     },
     {
         path: '/dashboard',
-        element: <PrivateRoute><Dashboard></Dashboard></PrivateRoute>,
+        element:<Dashboard></Dashboard>,
         children: [
             {
                 path: 'profile',
@@ -74,6 +75,10 @@ export const router = createBrowserRouter([
             {
                 path: 'my-posts',
                 Component: MyPost
+            },
+            {
+                path: 'payment-history',
+                Component: PaymentHistory
             },
             {
                 path: 'manage-users',

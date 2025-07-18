@@ -2,10 +2,13 @@ import { use } from "react";
 import { useForm } from "react-hook-form";
 import { AuthContext } from "../../shared/Context/AuthContext";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router";
 
 const AnnouncementForm = () => {
     const { user } = use(AuthContext)
     const axiosSecure = useAxiosSecure()
+    const navigate = useNavigate()
     const {
         register,
         handleSubmit,
@@ -19,6 +22,8 @@ const AnnouncementForm = () => {
         axiosSecure.post('/announcement', data)
             .then(res => {
                 console.log(res.data)
+                toast('announcement successfully post')
+navigate('/auth-announce')
             }).catch(error => console.log(error))
 
         // reset();
@@ -36,7 +41,7 @@ const AnnouncementForm = () => {
                         type=""
                         value={user?.photoURL}
                         placeholder="https://example.com/author.jpg"
-                        {...register("authorImage", { required: "Image URL is required" })}
+                        {...register("authorImage")}
                         className="input input-bordered w-full"
                     />
                     {errors.authorImage && <p className="text-red-500 text-sm">{errors.authorImage.message}</p>}
@@ -50,7 +55,7 @@ const AnnouncementForm = () => {
                         value={user?.displayName}
 
                         placeholder="Enter author name"
-                        {...register("authorName", { required: "Author name is required" })}
+                        {...register("authorName")}
                         className="input input-bordered w-full"
                     />
                     {errors.authorName && <p className="text-red-500 text-sm">{errors.authorName.message}</p>}
@@ -63,7 +68,7 @@ const AnnouncementForm = () => {
                         type="email"
                         value={user?.email}
                         placeholder="example@email.com"
-                        {...register("authorEmail", { required: "Email is required" })}
+                        {...register("authorEmail")}
                         className="input input-bordered w-full"
                     />
                     {errors.authorEmail && <p className="text-red-500 text-sm">{errors.authorEmail.message}</p>}

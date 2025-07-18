@@ -3,11 +3,13 @@ import React, { use, useState } from 'react';
 
 import { AuthContext } from '../../shared/Context/AuthContext';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
+import { useNavigate } from 'react-router';
+import { toast } from 'react-toastify';
 
 const PaymentForm = () => {
     const axiosSecure = useAxiosSecure()
     const { user } = use(AuthContext)
-    const [processing, setProcessing] = useState(false);
+    const navigate = useNavigate()
     const [error, setError] = useState(null)
     const stripe = useStripe()
     const elements = useElements()
@@ -55,7 +57,7 @@ const PaymentForm = () => {
                     billing_details: {
                         name: user?.displayName,
                         email: user?.email,
-                      
+
                     }
                 }
             });
@@ -68,35 +70,37 @@ const PaymentForm = () => {
                     console.log(result)
 
                     const paymentData = {
-                  
+                        name: user?.displayName,
                         email: user?.email,
                         amount,
                         transactionId: result.paymentIntent.id,
                         paymentMethod: result.paymentIntent.payment_method_types
                     }
                     const paymentRes = await axiosSecure.post(`/payments/${user?.email}`, paymentData)
-                    console.log(paymentRes)
-                  
-                }}
+                    if (paymentRes) {
+                        navigate('/')
+                        toast('Congratulations ✅ Membership Done')
+                    }
+
+                }
             }
         }
+    }
 
-        return (
-            <div className='my-8'>
-                <form onSubmit={handleSubmit} className="max-w-md mx-auto space-y-4">
-                    <CardElement className="p-4 border rounded" />
-                    {error && <p className="text-red-500 text-sm">{error}</p>}
-                    <button
-                        type="submit"
-                        disabled={!stripe || processing}
-                        className="btn btn-primary w-full"
-                    >
-                        {/* {processing ? "Processing..." : `Pay $${amount}`} */}
-                        Pay for Membership
-                    </button>
-                </form>
-            </div>
-        );
-    };
+    return (
+        <div className='my-8'>
+            <form onSubmit={handleSubmit} className="max-w-md mx-auto space-y-4">
+                <CardElement className="p-4 border rounded" />
+                {error && <p className="text-red-500 text-sm">{error}</p>}
+                <button
+                    type="submit"
+                    className="btn btn-primary w-full"
+                >
+                    Pay for Membership
+                </button>
+            </form>
+        </div>
+    );
+};
 
-    export default PaymentForm;
+export default PaymentForm;

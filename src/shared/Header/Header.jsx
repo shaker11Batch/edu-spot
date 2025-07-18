@@ -121,12 +121,24 @@ import {
 import { FiLogOut } from "react-icons/fi";
 import { Link, NavLink } from "react-router"; // ✅ Correct import
 import { AuthContext } from "../Context/AuthContext";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const Header = () => {
   const { user, logOut } = useContext(AuthContext);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [announcement, setAnnouncement] = useState(0)
+  const axiosSecure = useAxiosSecure()
   const dropdownRef = useRef(null);
+
+
+useEffect(() =>{
+axiosSecure.get('/count')
+.then(res =>{
+  setAnnouncement(res.data.count)
+})
+},[])
+
 
   const handleLogOut = () => {
     logOut()
@@ -199,11 +211,12 @@ const Header = () => {
                     : "flex items-center gap-1 hover:text-blue-500"
                 }
               >
-                <FaBell /> Announcement
-              </NavLink>
-              <span className="absolute -top-2 -right-3 bg-red-600 text-white text-xs px-1.5 py-0.5 rounded-full font-semibold">
-                0
+                <span className="absolute -top-2 -right-3 bg-red-600 text-white text-xs px-1.5 py-0.5 rounded-full font-semibold">
+               {announcement}
               </span>
+               <FaBell /> Announcement
+              </NavLink>
+             
             </li>
 
           </ul>

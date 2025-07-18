@@ -1,6 +1,6 @@
 
 import { use, useState } from "react";
-import { FaTags, FaThumbsDown } from "react-icons/fa";
+import { FaCalendarAlt, FaTags, FaThumbsDown } from "react-icons/fa";
 import { FaThumbsUp } from "react-icons/fa";
 import { FaInfoCircle } from "react-icons/fa";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
@@ -74,30 +74,22 @@ const Post = ({ post }) => {
           {post.tag}
         </div>
         {/* Vote Buttons */}
-        <div className="flex gap-6 items-center text-gray-700 text-sm">
-          {/* <button
-            onClick={() => { handleUpVote(user?.email) }}
-            className="flex items-center gap-1 hover:text-green-600"
-          >
-            <FaThumbsUp /> <span>{upVoteCount}</span>
-          </button> */}
-          {/* 
-        <button
-          onClick={handleDownVote}
-          className="flex items-center gap-1 hover:text-red-600"
-        >
-          <FaThumbsDown /> <span>{downvoteCount}</span>
-        </button> */}
-          <div className="flex justify-end">
+        <div className="flex gap-6 items-center justify-between text-gray-700 text-sm">
+          <p className="flex items-center gap-1 text-gray-500 text-sm">
+            <FaCalendarAlt className="text-blue-500" />
+            {post.createAt}
+          </p>
+          <div className="flex  justify-between">
             <Link to={`/posts/${post._id}`}>
               <button
-               
+
                 className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md shadow transition duration-200"
               >
                 <FaInfoCircle className="text-white" />
                 <span>Details</span>
               </button>
             </Link>
+
           </div>
         </div>
       </div>

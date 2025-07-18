@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { FaUser, FaImage, FaEnvelope, FaLock } from "react-icons/fa";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 import { use, useState } from "react";
 import { AuthContext } from "../../shared/Context/AuthContext";
@@ -14,6 +14,7 @@ const Register = () => {
     const [profilePic, setProfilePic] = useState('')
     const { createUser, setUser } = use(AuthContext)
     const axiosSecure = useAxiosSecure()
+    const navigate = useNavigate()
     const {
         register,
         handleSubmit,
@@ -26,7 +27,7 @@ const Register = () => {
         createUser(data.email, data.password)
             .then(result => {
                 const user = result.user;
-
+                navigate('/')
                 // update profile 
                 const profile = { displayName: data?.name, photoURL: profilePic }
                 updateProfile(auth.currentUser, profile)
@@ -34,6 +35,7 @@ const Register = () => {
                         console.log('user profile update')
 
                         setUser(...user, profile)
+                        
                     })
                     .catch(error => console.log(error))
 
@@ -43,8 +45,10 @@ const Register = () => {
                     photo: profilePic,
                     email: data?.email,
                     badge: "Bronze",
-                    role: "user"
+                    role: "user",
+                    createdAt: new Date().toLocaleString()
                 }
+             
                 axiosSecure.post('/user', userInfo)
                     .then(res => {
                         console.log(res.data)

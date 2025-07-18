@@ -34,7 +34,7 @@ const AnnouncementCard = ({ announcement }) => {
           <img
             src={announcementImage}
             alt={title}
-            className="w-full h-auto rounded-lg object-cover mb-4"
+            className="w-full h-[400px] rounded-lg object-cover mb-4"
             onError={(e) => (e.target.src = "https://i.ibb.co/GsxBqmg/default-announcement.jpg")}
           />
         )}
